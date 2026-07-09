@@ -400,6 +400,27 @@ dd {
   margin: 0;
 }
 
+.static-fallback {
+  min-height: 100vh;
+  padding: clamp(3rem, 8vw, 7rem) clamp(1rem, 5vw, 5rem);
+}
+
+.static-fallback h1 {
+  max-width: 56rem;
+}
+
+.static-fallback p {
+  color: var(--muted);
+  font-size: 1.08rem;
+  max-width: 46rem;
+}
+
+code {
+  background: rgba(17, 17, 19, 0.06);
+  border: 1px solid var(--line);
+  padding: 0.1rem 0.25rem;
+}
+
 .noscript {
   padding: 2rem;
 }

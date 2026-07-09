@@ -2,6 +2,19 @@ import { cities, getCity, getVenue } from "./data.js";
 
 const app = document.querySelector("#app");
 
+function renderFatalError(error) {
+  console.error("PlayDude failed to render:", error);
+  if (!app) return;
+
+  app.innerHTML = `
+    <main class="not-found">
+      <p class="eyebrow">Render error</p>
+      <h1>PlayDude could not load this page.</h1>
+      <p>Please run the project with <code>npm run dev</code> and check the browser console for details.</p>
+    </main>
+  `;
+}
+
 function cityPath(city) {
   return `/cities/${city.slug}/`;
 }
@@ -318,6 +331,11 @@ function renderNotFound() {
 }
 
 function renderRoute() {
+  if (!app) {
+    console.error("PlayDude could not find #app in index.html.");
+    return;
+  }
+
   const path = window.location.pathname;
   const cityMatch = path.match(/^\/cities\/([^/]+)\/?$/);
   const venueMatch = path.match(/^\/cities\/([^/]+)\/venues\/([^/]+)\/?$/);
@@ -335,11 +353,14 @@ function renderRoute() {
     app.innerHTML = renderNotFound();
   }
 
-  window.scrollTo({ top: 0, behavior: "instant" });
+  window.scrollTo({ top: 0, behavior: "auto" });
 }
 
 document.addEventListener("click", (event) => {
-  const link = event.target.closest("a[data-link]");
+  const target = event.target;
+  if (!(target instanceof Element)) return;
+
+  const link = target.closest("a[data-link]");
   if (!link || link.origin !== window.location.origin) return;
 
   event.preventDefault();
@@ -347,5 +368,16 @@ document.addEventListener("click", (event) => {
   renderRoute();
 });
 
-window.addEventListener("popstate", renderRoute);
-renderRoute();
+window.addEventListener("popstate", () => {
+  try {
+    renderRoute();
+  } catch (error) {
+    renderFatalError(error);
+  }
+});
+
+try {
+  renderRoute();
+} catch (error) {
+  renderFatalError(error);
+}
