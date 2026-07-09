@@ -174,6 +174,12 @@ h3 {
   max-width: 46rem;
 }
 
+.hero-note {
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 1rem;
+  max-width: 42rem;
+}
+
 .hero-actions {
   display: flex;
   flex-wrap: wrap;
@@ -196,6 +202,12 @@ h3 {
 }
 
 .button.secondary {
+  color: var(--white);
+}
+
+.button.dark {
+  align-self: start;
+  background: var(--ink);
   color: var(--white);
 }
 
@@ -260,7 +272,8 @@ h3 {
 .city-card,
 .area-item,
 .venue-preview,
-.quick-verdict {
+.quick-verdict,
+.article-feature {
   background: var(--white);
   border: 1px solid var(--line);
   padding: 1.2rem;
@@ -325,6 +338,10 @@ dd {
   margin-bottom: 1rem;
 }
 
+.quick-verdict p {
+  color: var(--muted);
+}
+
 .article-section {
   border-top: 1px solid var(--line);
   padding: 2rem 0;
@@ -334,6 +351,26 @@ dd {
   color: var(--muted);
   font-size: 1.08rem;
   max-width: 52rem;
+}
+
+.article-section h2 + .tip-list,
+.article-section .eyebrow + h2 {
+  margin-top: 0;
+}
+
+.pill-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  max-width: 52rem;
+}
+
+.pill-list span {
+  background: var(--white);
+  border: 1px solid var(--line);
+  color: var(--ink);
+  font-weight: 750;
+  padding: 0.65rem 0.85rem;
 }
 
 .area-list {
@@ -375,6 +412,75 @@ dd {
   flex-wrap: wrap;
   gap: 1.2rem;
   padding-top: 2rem;
+}
+
+.article-feature {
+  align-items: center;
+  display: grid;
+  gap: 2rem;
+  grid-template-columns: minmax(0, 1fr) auto;
+  margin: clamp(2rem, 5vw, 4rem) clamp(1rem, 5vw, 5rem);
+}
+
+.article-feature h2 {
+  max-width: 48rem;
+}
+
+.article-feature p:not(.eyebrow) {
+  color: var(--muted);
+  max-width: 46rem;
+}
+
+.article-hero {
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 2rem;
+  padding-bottom: clamp(2rem, 5vw, 4rem);
+}
+
+.article-hero h1 {
+  font-size: clamp(3rem, 7vw, 6.6rem);
+  max-width: 62rem;
+}
+
+.article-meta {
+  background: var(--white);
+  border: 1px solid var(--line);
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin-top: 2rem;
+  max-width: 54rem;
+  padding: 1rem;
+}
+
+.article-body {
+  display: grid;
+  gap: 1.6rem;
+  max-width: 52rem;
+}
+
+.article-body section {
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 1.4rem;
+}
+
+.article-body section:last-child {
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+
+.article-body h2 {
+  font-size: clamp(1.7rem, 3vw, 2.4rem);
+}
+
+.article-body p {
+  color: var(--muted);
+  font-size: 1.1rem;
+}
+
+.article-tips {
+  margin: 1rem 0 2rem;
+  max-width: 52rem;
 }
 
 .not-found {
@@ -429,7 +535,8 @@ code {
   .hero,
   .section-heading,
   .city-hero,
-  .split-section {
+  .split-section,
+  .article-feature {
     grid-template-columns: 1fr;
   }
 
@@ -442,6 +549,10 @@ code {
 
   .city-card {
     min-height: auto;
+  }
+
+  .article-meta {
+    grid-template-columns: 1fr;
   }
 }
 

@@ -1,4 +1,4 @@
-import { cities, getCity, getVenue } from "./data.js";
+import { articles, cities, getArticle, getCity, getVenue } from "./data.js";
 
 const app = document.querySelector("#app");
 
@@ -23,6 +23,10 @@ function venuePath(city, venue) {
   return `/cities/${city.slug}/venues/${venue.slug}/`;
 }
 
+function articlePath(article) {
+  return `/articles/${article.slug}/`;
+}
+
 function pageShell(content, meta = {}) {
   document.title = meta.title ? `${meta.title} - PlayDude` : "PlayDude - Nightlife Intelligence";
 
@@ -43,13 +47,15 @@ function pageShell(content, meta = {}) {
         </span>
       </a>
       <nav class="nav" aria-label="Main navigation">
+        <a href="/" data-link>Home</a>
         ${cities.map((city) => `<a href="${cityPath(city)}" data-link>${city.name}</a>`).join("")}
+        <a href="${articlePath(articles[0])}" data-link>Starter Guide</a>
       </nav>
     </header>
     ${content}
     <footer class="site-footer">
       <p><strong>PlayDude</strong> helps you know before you go.</p>
-      <p>Editorial MVP. No membership, login, payment, or ads.</p>
+      <p>Editorial MVP for Thailand and Japan. No membership, login, payment, or ads.</p>
     </footer>
   `;
 }
@@ -65,6 +71,8 @@ function setMeta(name, content, attr = "name") {
 }
 
 function renderHome() {
+  const featuredArticle = articles[0];
+
   return pageShell(
     `
       <main>
@@ -73,46 +81,60 @@ function renderHome() {
             <p class="eyebrow">Nightlife Intelligence</p>
             <h1>Know Before You Go.</h1>
             <p class="lede">
-              PlayDude helps you choose the right nightlife area, understand the venue mood,
-              and avoid walking into the wrong night blind.
+              PlayDude is a Nightlife Intelligence website for readers who want fewer surprises before visiting
+              nightlife venues. It helps you understand areas, venue mood, timing, etiquette, price signals, and
+              common mistakes before the night starts.
+            </p>
+            <p class="hero-note">
+              Not a general travel blog. Not an adult website. Current focus: Thailand and Japan nightlife guides,
+              starting with Bangkok, Pattaya, Tokyo, and Osaka.
             </p>
             <div class="hero-actions">
-              <a class="button primary" href="/cities/bangkok/" data-link>Start with Bangkok</a>
-              <a class="button secondary" href="#cities">Browse cities</a>
+              <a class="button primary" href="${articlePath(featuredArticle)}" data-link>Read the Bangkok starter guide</a>
+              <a class="button secondary" href="#cities">Browse city guides</a>
             </div>
           </div>
           <aside class="intelligence-panel" aria-label="PlayDude editorial promise">
             <span>Founder-edited</span>
-            <strong>70% city guide. 30% visitor reality check.</strong>
-            <p>Clear, practical, non-sensational nightlife context for first-time and returning visitors.</p>
+            <strong>Practical nightlife context before you arrive.</strong>
+            <p>70% composed city guide, 30% visitor reality check: calm, specific, and built to reduce uncertainty.</p>
           </aside>
         </section>
 
         <section class="section" aria-labelledby="what-playdude-does">
           <div class="section-heading">
-            <p class="eyebrow">The purpose</p>
-            <h2 id="what-playdude-does">Reduce uncertainty before the night starts.</h2>
+            <p class="eyebrow">What PlayDude does</p>
+            <h2 id="what-playdude-does">A clearer read on the night before you commit.</h2>
           </div>
           <div class="feature-grid">
             <article>
               <h3>City context</h3>
-              <p>Understand the nightlife map before choosing a district.</p>
-            </article>
-            <article>
-              <h3>Area fit</h3>
-              <p>Match the neighborhood to your mood, budget, timing, and comfort level.</p>
+              <p>See how each nightlife city is organized, which districts matter, and where a first night should start.</p>
             </article>
             <article>
               <h3>Venue expectations</h3>
-              <p>Know the atmosphere, crowd, price signal, timing, and entry notes before arriving.</p>
+              <p>Understand atmosphere, crowd, timing, price signal, and entry expectations before walking in.</p>
+            </article>
+            <article>
+              <h3>Editorial judgment</h3>
+              <p>Get calm guidance that explains tradeoffs rather than chasing hype, gossip, or generic top-ten lists.</p>
             </article>
           </div>
         </section>
 
+        <section class="section article-feature" aria-labelledby="featured-guide">
+          <div>
+            <p class="eyebrow">${featuredArticle.category}</p>
+            <h2 id="featured-guide">${featuredArticle.title}</h2>
+            <p>${featuredArticle.dek}</p>
+          </div>
+          <a class="button dark" href="${articlePath(featuredArticle)}" data-link>Open article</a>
+        </section>
+
         <section class="section" id="cities" aria-labelledby="city-guides">
           <div class="section-heading">
-            <p class="eyebrow">Initial guides</p>
-            <h2 id="city-guides">City landing pages</h2>
+            <p class="eyebrow">Thailand and Japan</p>
+            <h2 id="city-guides">Current city guides</h2>
           </div>
           <div class="city-grid">
             ${cities.map(renderCityCard).join("")}
@@ -122,7 +144,8 @@ function renderHome() {
     `,
     {
       title: "Nightlife Intelligence",
-      description: "PlayDude helps nightlife visitors know before they go."
+      description:
+        "PlayDude is a Nightlife Intelligence website for Thailand and Japan that helps visitors know before they go."
     }
   );
 }
@@ -135,12 +158,12 @@ function renderCityCard(city) {
       <p>${city.summary}</p>
       <dl>
         <div>
-          <dt>First-night area</dt>
+          <dt>Best first-night area</dt>
           <dd>${city.firstNightArea}</dd>
         </div>
         <div>
-          <dt>Arrival window</dt>
-          <dd>${city.arrivalWindow}</dd>
+          <dt>Best for</dt>
+          <dd>${city.bestFor.slice(0, 3).join(", ")}</dd>
         </div>
       </dl>
       <a href="${cityPath(city)}" data-link>Read the guide</a>
@@ -160,26 +183,52 @@ function renderCityGuide(city) {
               <p class="lede">${city.summary}</p>
             </div>
             <div class="quick-verdict">
-              <h2>Quick verdict</h2>
+              <h2>PlayDude quick verdict</h2>
+              <p>${city.verdict}</p>
               <dl>
-                <div><dt>Best for</dt><dd>${city.bestFor.join(", ")}</dd></div>
-                <div><dt>Not ideal for</dt><dd>${city.notIdealFor.join(", ")}</dd></div>
-                <div><dt>Best first-night area</dt><dd>${city.firstNightArea}</dd></div>
-                <div><dt>Typical cost</dt><dd>${city.costSignal}</dd></div>
+                <div><dt>First-night area</dt><dd>${city.firstNightArea}</dd></div>
+                <div><dt>Cost signal</dt><dd>${city.costSignal}</dd></div>
                 <div><dt>Arrival window</dt><dd>${city.arrivalWindow}</dd></div>
               </dl>
             </div>
           </section>
 
           <section class="article-section">
-            <h2>Main thing to know</h2>
-            <p>${city.mainThing}</p>
+            <p class="eyebrow">City overview</p>
+            <h2>How ${city.name} works at night</h2>
+            <p>${city.overview}</p>
           </section>
 
           <section class="article-section">
-            <h2>Nightlife areas</h2>
+            <p class="eyebrow">Best for</p>
+            <h2>Who this city suits</h2>
+            <div class="pill-list">
+              ${city.bestFor.map((item) => `<span>${item}</span>`).join("")}
+            </div>
+          </section>
+
+          <section class="article-section">
+            <p class="eyebrow">Main nightlife areas</p>
+            <h2>Start with the district</h2>
             <div class="area-list">
               ${city.areas.map(renderArea).join("")}
+            </div>
+          </section>
+
+          <section class="article-section split-section">
+            <div>
+              <p class="eyebrow">What to expect</p>
+              <h2>The practical read</h2>
+              <ul class="tip-list">
+                ${city.whatToExpect.map((item) => `<li>${item}</li>`).join("")}
+              </ul>
+            </div>
+            <div>
+              <p class="eyebrow">Common mistakes</p>
+              <h2>What trips visitors up</h2>
+              <ul class="tip-list">
+                ${city.commonMistakes.map((item) => `<li>${item}</li>`).join("")}
+              </ul>
             </div>
           </section>
 
@@ -193,16 +242,15 @@ function renderCityGuide(city) {
               </p>
             </div>
             <div>
-              <h2>Budget and etiquette</h2>
+              <h2>Venue profiles</h2>
               <p>
-                Treat prices as signals, not guarantees. Check cover charges, minimum spends, dress expectations,
-                and transport home before committing to a late stop.
+                These sample profiles show how PlayDude will explain venue fit, crowd, timing, pricing signals,
+                and entry expectations without turning the site into a review free-for-all.
               </p>
             </div>
           </section>
 
           <section class="article-section">
-            <h2>Venue profiles</h2>
             <div class="venue-list">
               ${city.venues.map((venue) => renderVenuePreview(city, venue)).join("")}
             </div>
@@ -212,7 +260,7 @@ function renderCityGuide(city) {
     `,
     {
       title: `${city.name} Nightlife Guide`,
-      description: `${city.name} nightlife guide from PlayDude: areas, first-night plan, venue expectations, and practical notes.`
+      description: `${city.name} nightlife guide from PlayDude: overview, best areas, what to expect, common mistakes, and quick verdict.`
     }
   );
 }
@@ -316,6 +364,58 @@ function renderVenueProfile(city, venue) {
   );
 }
 
+function renderEditorialArticle(article) {
+  const city = getCity(article.citySlug);
+
+  return pageShell(
+    `
+      <main>
+        <article class="guide editorial-article">
+          <header class="article-hero">
+            <p class="eyebrow">${article.category} / ${article.readTime}</p>
+            <h1>${article.title}</h1>
+            <p class="lede">${article.dek}</p>
+            <dl class="article-meta">
+              <div><dt>Updated</dt><dd>${article.updated}</dd></div>
+              <div><dt>City</dt><dd>${city ? city.name : "Bangkok"}</dd></div>
+              <div><dt>Purpose</dt><dd>Reduce uncertainty before going out</dd></div>
+            </dl>
+          </header>
+
+          <section class="article-section article-body">
+            ${article.sections
+              .map(
+                (section) => `
+                  <section>
+                    <h2>${section.heading}</h2>
+                    <p>${section.body}</p>
+                  </section>
+                `
+              )
+              .join("")}
+          </section>
+
+          <aside class="quick-verdict article-tips">
+            <h2>PlayDude quick checks</h2>
+            <ul class="tip-list">
+              ${article.quickTips.map((tip) => `<li>${tip}</li>`).join("")}
+            </ul>
+          </aside>
+
+          <nav class="article-nav" aria-label="Related pages">
+            ${city ? `<a href="${cityPath(city)}" data-link>Read the ${city.name} city guide</a>` : ""}
+            <a href="/" data-link>Back to PlayDude home</a>
+          </nav>
+        </article>
+      </main>
+    `,
+    {
+      title: article.title,
+      description: article.dek
+    }
+  );
+}
+
 function renderNotFound() {
   return pageShell(
     `
@@ -339,6 +439,7 @@ function renderRoute() {
   const path = window.location.pathname;
   const cityMatch = path.match(/^\/cities\/([^/]+)\/?$/);
   const venueMatch = path.match(/^\/cities\/([^/]+)\/venues\/([^/]+)\/?$/);
+  const articleMatch = path.match(/^\/articles\/([^/]+)\/?$/);
 
   if (path === "/") {
     app.innerHTML = renderHome();
@@ -349,6 +450,9 @@ function renderRoute() {
     const city = getCity(venueMatch[1]);
     const venue = getVenue(venueMatch[1], venueMatch[2]);
     app.innerHTML = city && venue ? renderVenueProfile(city, venue) : renderNotFound();
+  } else if (articleMatch) {
+    const article = getArticle(articleMatch[1]);
+    app.innerHTML = article ? renderEditorialArticle(article) : renderNotFound();
   } else {
     app.innerHTML = renderNotFound();
   }
