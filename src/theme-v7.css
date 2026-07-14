@@ -1,0 +1,193 @@
+/* PlayDude v7 — final black and neon-pink theme layer */
+body {
+  background: radial-gradient(circle at 78% 8%, rgba(255, 112, 189, 0.08), transparent 25rem), var(--paper);
+  color: var(--white);
+}
+
+h1, h2, h3,
+.proof-rail strong,
+.field-city-card h3,
+.venue-intel-card h3,
+.district-card h3,
+.profile-signal > strong {
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-weight: 780;
+  letter-spacing: -0.055em;
+}
+
+.site-header {
+  background: rgba(8, 6, 9, 0.9);
+  border-bottom-color: rgba(255, 146, 207, 0.22);
+  min-height: 5.1rem;
+}
+
+.brand { gap: 0.9rem; }
+.brand-mark {
+  background: #0d0a0e;
+  border: 1px solid rgba(255, 146, 207, 0.75);
+  box-shadow: inset 0 0 18px rgba(255, 112, 189, 0.13), 0 0 22px rgba(255, 112, 189, 0.16);
+  height: 2.8rem;
+  overflow: hidden;
+  position: relative;
+  transform: skew(-7deg);
+  width: 3.15rem;
+}
+.brand-mark b, .brand-mark i {
+  font-size: 1.35rem;
+  font-style: normal;
+  font-weight: 900;
+  line-height: 1;
+  position: absolute;
+}
+.brand-mark b { color: var(--white); left: 0.52rem; top: 0.42rem; }
+.brand-mark i { bottom: 0.4rem; color: var(--accent); right: 0.48rem; }
+.brand-wordmark strong { font-size: 1rem; font-weight: 900; letter-spacing: 0.12em; }
+.brand-wordmark strong span { color: var(--accent); }
+.brand-wordmark small {
+  color: rgba(255, 249, 253, 0.48);
+  font-size: 0.58rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.nav a {
+  color: rgba(255, 249, 253, 0.62);
+  font-size: 0.74rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.responsibility-bar {
+  background: #09070a;
+  border-bottom: 1px solid rgba(255, 146, 207, 0.18);
+  color: var(--accent);
+}
+.responsibility-bar span + span { border-left-color: rgba(255, 146, 207, 0.24); }
+
+.field-hero {
+  background:
+    linear-gradient(rgba(255, 146, 207, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 146, 207, 0.035) 1px, transparent 1px),
+    radial-gradient(circle at 82% 22%, rgba(255, 112, 189, 0.22), transparent 28%),
+    #080609;
+}
+.field-hero h1 { max-width: 58rem; text-transform: uppercase; }
+.eyebrow, .field-hero .eyebrow, .live-brief .eyebrow { color: var(--accent); }
+
+.live-brief,
+.playbook-card,
+.district-card,
+.price-ledger,
+.profile-expectation,
+.merged-note-card {
+  background: #121015;
+  border-color: var(--line);
+  color: var(--white);
+}
+.live-brief { border: 1px solid rgba(255, 146, 207, 0.28); }
+.live-brief-head, .brief-grid, .brief-grid div:nth-child(odd), .brief-grid div:nth-child(-n + 2) { border-color: var(--line); }
+.brief-city, .live-brief > a, .city-open-link, .playbook-card > a, .venue-card-foot a, .district-best, .venue-location { color: var(--accent) !important; }
+
+.proof-rail {
+  background: #0e0b10;
+  border-bottom: 1px solid rgba(255, 146, 207, 0.22);
+  border-top: 1px solid rgba(255, 146, 207, 0.22);
+  color: var(--white);
+}
+.proof-rail div, .proof-rail div:last-child { border-color: var(--line); }
+.proof-rail strong { color: var(--accent); }
+
+.section-heading h2, .city-main-thing, .mini-guide-list a, .city-stat-row strong, .playbook-card h3, .district-card h3 { color: var(--white); }
+.section-intro, .playbook-card > p, .district-card p, .profile-expectation > p:not(.eyebrow), .merged-notes-heading > p:last-child { color: var(--muted); }
+
+.field-city-card { background: #100d12; border-color: var(--line); }
+.field-city-card::before {
+  background:
+    radial-gradient(circle at 75% 35%, rgba(255, 146, 207, 0.42), transparent 18%),
+    linear-gradient(125deg, transparent 38%, rgba(255, 146, 207, 0.12) 38% 39%, transparent 39%),
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.035) 0 1px, transparent 1px 42px),
+    #110d12 !important;
+}
+.field-city-body { background: linear-gradient(180deg, #121015, #0d0b0f); }
+.city-stat-row, .mini-guide-list a, .venue-card-foot, .ledger-table, .ledger-table > div,
+.profile-expectation dl, .profile-expectation dl > div, .profile-links, .merged-notes-panel { border-color: var(--line); }
+
+.playbook-card { border: 1px solid var(--line); }
+.playbook-index { color: rgba(255, 146, 207, 0.22); }
+
+.intel-section {
+  background: radial-gradient(circle at 14% 4%, rgba(255, 112, 189, 0.11), transparent 24rem), #080609;
+  border-bottom: 1px solid var(--line);
+  border-top: 1px solid var(--line);
+}
+.explorer-controls input, .explorer-controls select { background: #121015; border-color: var(--line); }
+.explorer-controls input:focus, .explorer-controls select:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(255, 146, 207, 0.1);
+  outline: none;
+}
+.result-counter strong { color: var(--accent); }
+
+.venue-intel-card {
+  background: #121015;
+  border: 1px solid var(--line);
+  color: var(--white);
+  min-height: 21rem;
+  padding: 1.15rem;
+  transition: border-color 160ms ease, transform 160ms ease, box-shadow 160ms ease;
+}
+.venue-intel-card:hover {
+  border-color: rgba(255, 146, 207, 0.62);
+  box-shadow: 0 18px 42px rgba(0, 0, 0, 0.34), 0 0 26px rgba(255, 112, 189, 0.07);
+  transform: translateY(-3px);
+}
+.venue-card-top span:last-child { background: rgba(255, 146, 207, 0.1); color: var(--accent); }
+.venue-intel-card h3 { color: var(--white); font-size: clamp(1.55rem, 2.4vw, 2.25rem); margin-top: 1.4rem; }
+.venue-intel-card > p:not(.venue-location) {
+  color: var(--muted);
+  display: -webkit-box;
+  font-size: 0.8rem;
+  line-height: 1.5;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+}
+.price-chip { border-left-color: var(--accent); }
+.price-chip strong, .profile-facts strong, .ledger-table strong, .profile-expectation dd { color: var(--white); }
+
+.button.primary { background: var(--accent); border-color: var(--accent); color: #110b0f; }
+.button.secondary, .button.dark-outline { border-color: rgba(255, 146, 207, 0.58); color: var(--accent); }
+.final-cta {
+  background: radial-gradient(circle at 50% 120%, rgba(255, 146, 207, 0.2), transparent 45%), #0e0b10;
+  border-top: 1px solid var(--line);
+  color: var(--white);
+}
+
+.city-field-bangkok, .city-field-pattaya, .city-field-hanoi,
+.city-field-ho-chi-minh-city, .city-field-jakarta, .city-field-kuala-lumpur,
+.guide-v3-hero, .venue-profile-hero {
+  background:
+    repeating-linear-gradient(90deg, rgba(255, 146, 207, 0.035) 0 1px, transparent 1px 58px),
+    radial-gradient(circle at 78% 22%, rgba(255, 112, 189, 0.22), transparent 26%),
+    #080609;
+}
+.planning-rail, .profile-facts { background: #100d12; border-color: var(--line); }
+.planning-rail > div, .profile-facts > div, .profile-facts > div:last-child { border-color: var(--line); }
+.district-section, .guide-section-grid, .guide-section-grid article, .source-disclosure { border-color: var(--line); }
+.checklist-panel, .watch-panel { background: var(--accent); color: #110b0f; }
+.profile-signal { border-left-color: var(--accent); }
+.profile-signal > span, .city-verdict-box > span, .guide-decision-box > span { color: var(--accent); }
+.profile-content-grid { gap: 1px; }
+.merged-note-grid { background: var(--line); border-color: var(--line); }
+.merged-note-card > strong, .ledger-disclaimer { color: var(--accent); }
+.responsible-use-note { background: #100d12; border: 1px solid var(--line); }
+.responsible-use-note strong { color: var(--accent); }
+.source-disclosure { background: #0e0b10; color: var(--white); }
+.site-footer { background: #060507; border-top: 1px solid rgba(255, 146, 207, 0.2); }
+
+@media (max-width: 620px) {
+  .brand-wordmark small { display: none; }
+  .brand-mark { height: 2.35rem; width: 2.7rem; }
+  .brand-mark b, .brand-mark i { font-size: 1.12rem; }
+  .brand-mark b { left: 0.45rem; top: 0.35rem; }
+  .brand-mark i { bottom: 0.34rem; right: 0.42rem; }
+}

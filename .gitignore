@@ -5,5 +5,3 @@ npm-debug.log*
 .env.local
 dist/
 build/
-
-*.zip

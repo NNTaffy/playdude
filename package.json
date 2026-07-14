@@ -1,8 +1,8 @@
 {
   "name": "playdude",
-  "version": "0.1.0",
+  "version": "0.7.0",
   "private": true,
-  "description": "PlayDude Nightlife Intelligence MVP",
+  "description": "PlayDude six-city Nightlife Intelligence MVP",
   "scripts": {
     "dev": "node server.js",
     "start": "node server.js"
