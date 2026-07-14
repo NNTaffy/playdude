@@ -1,8 +1,10 @@
-const http = require("http");
-const fs = require("fs");
-const path = require("path");
+import http from "node:http";
+import fs from "node:fs";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 
-const root = __dirname;
+const projectRoot = path.dirname(fileURLToPath(import.meta.url));
+const root = fs.existsSync(path.join(projectRoot, "dist")) ? path.join(projectRoot, "dist") : projectRoot;
 const port = Number(process.env.PORT || 5173);
 
 const mimeTypes = {
@@ -44,9 +46,19 @@ const server = http.createServer((req, res) => {
       return;
     }
 
-    const fallbackPath = path.join(root, "index.html");
-    res.writeHead(200, { "Content-Type": mimeTypes[".html"] });
-    fs.createReadStream(fallbackPath).pipe(res);
+    const directoryIndex = path.join(filePath, "index.html");
+    fs.stat(directoryIndex, (indexError, indexStats) => {
+      if (!indexError && indexStats.isFile()) {
+        res.writeHead(200, { "Content-Type": mimeTypes[".html"] });
+        fs.createReadStream(directoryIndex).pipe(res);
+        return;
+      }
+
+      const notFoundPath = path.join(root, "404.html");
+      const fallbackPath = fs.existsSync(notFoundPath) ? notFoundPath : path.join(root, "index.html");
+      res.writeHead(fs.existsSync(notFoundPath) ? 404 : 200, { "Content-Type": mimeTypes[".html"] });
+      fs.createReadStream(fallbackPath).pipe(res);
+    });
   });
 });
 

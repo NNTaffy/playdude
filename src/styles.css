@@ -1443,6 +1443,34 @@ dd {
   max-width: 46rem;
 }
 
+.seo-fallback {
+  max-width: 78rem;
+  margin: 0 auto;
+}
+
+.seo-fallback section {
+  margin-top: clamp(2rem, 5vw, 4rem);
+}
+
+.seo-fallback li {
+  margin: 0.75rem 0;
+  color: var(--muted);
+}
+
+.seo-fallback a,
+.seo-breadcrumbs a {
+  color: var(--accent);
+}
+
+.seo-breadcrumbs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin-bottom: 2rem;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
 code {
   background: rgba(18, 17, 22, 0.06);
   border: 1px solid var(--line);

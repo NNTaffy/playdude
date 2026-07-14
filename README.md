@@ -20,10 +20,12 @@ The project helps readers reduce uncertainty before visiting nightlife areas and
 - `content/` - city content workspace
 - `src/` - application source code and editorial data
 - `public/` - static assets
+- `scripts/` - SEO build and verification scripts
+- `dist/` - generated Cloudflare Pages output (created by `npm run build`)
 
 ## Current Status
 
-This repository contains the six-city v7 MVP. It is a no-dependency frontend with:
+This repository contains the six-city v8 SEO foundation. It is a no-dependency frontend with:
 
 - A field-intelligence homepage
 - Six live city guides
@@ -36,7 +38,9 @@ This repository contains the six-city v7 MVP. It is a no-dependency frontend wit
 - 44 new Ho Chi Minh City, Jakarta, and Kuala Lumpur records
 - Search and filtering by city and format directly inside Venue Intel
 - Search and category filters
-- Observed price ledgers, source dates, timing, watch-outs, and responsible-use notes
+- Observed price ledgers, source dates, timing, and responsible-use notes
+- 247 crawlable static routes with unique metadata and canonical URLs
+- XML sitemap, robots policy, security headers, and a real 404 response
 - No membership, login, payment, or advertising features
 
 ## Source boundary
@@ -45,7 +49,7 @@ Venue Intel preserves named venues, source prices, locations, negative opinions,
 
 Discriminatory language, illegal-drug instructions, unverifiable guarantees, and private referral contacts are not reproduced. Venues tied by the source to possible underage activity remain visible as risk records rather than being silently removed; they are clearly marked as not recommended or requiring strict 20+ verification.
 
-For the latest type-system, profile, and visual changes, see `docs/12-type-and-neon-redesign-v7.md`.
+For the latest type-system and visual changes, see `docs/12-type-and-neon-redesign-v7.md`. For the SEO build, see `docs/13-seo-foundation-v8.md`.
 
 ## Run Locally
 
@@ -56,7 +60,7 @@ Requirements:
 Start the local website from the project root:
 
 ```bash
-npm run dev
+npm start
 ```
 
 Then open the local server URL shown in the terminal:
@@ -73,13 +77,28 @@ Optional custom port:
 PORT=3000 npm run dev
 ```
 
+## Build and Verify
+
+Generate the production site and run the release checks:
+
+```bash
+npm run build
+npm run check
+```
+
+The verified output is written to `dist/`. Cloudflare Pages should use:
+
+- Build command: `npm run build`
+- Build output directory: `dist`
+- Root directory: repository root
+
 
 ## Blank Page Troubleshooting
 
 If the page is blank:
 
 1. Confirm you are in the project root folder.
-2. Run `npm run dev`.
+2. Run `npm start`.
 3. Open `http://localhost:5173`.
 4. Open DevTools → Console and check for JavaScript errors.
 5. Confirm these files exist: `index.html`, `src/main.js`, `src/data.js`, `src/styles.css`, and `server.js`.

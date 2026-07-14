@@ -187,6 +187,19 @@ function setMeta(name, content, attr = "name") {
   tag.setAttribute("content", content);
 }
 
+function setCanonical(pathname = window.location.pathname) {
+  const canonicalPath = pathname === "/" ? "/" : `${pathname.replace(/\/$/, "")}/`;
+  const canonicalUrl = `https://playdude.club${canonicalPath}`;
+  let tag = document.head.querySelector('link[rel="canonical"]');
+  if (!tag) {
+    tag = document.createElement("link");
+    tag.setAttribute("rel", "canonical");
+    document.head.appendChild(tag);
+  }
+  tag.setAttribute("href", canonicalUrl);
+  setMeta("og:url", canonicalUrl, "property");
+}
+
 function renderFatalError(error) {
   console.error("PlayDude failed to render:", error);
   if (!app) return;
@@ -208,6 +221,8 @@ function pageShell(content, meta = {}) {
   setMeta("description", description);
   setMeta("og:title", document.title, "property");
   setMeta("og:description", description, "property");
+  setMeta("og:type", "website", "property");
+  setCanonical();
 
   return `
     <div class="responsibility-bar">
