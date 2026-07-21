@@ -4,6 +4,7 @@ import { fileURLToPath } from "node:url";
 import { getAllVenues, getPublishedCities } from "../src/data.js";
 import { sourceLedger } from "../src/source-ledger.js";
 import { sourceRecordToVenue } from "../src/expanded-cities.js";
+import { guideMedia, venueMedia } from "../src/media.js";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const output = path.join(root, "dist");
@@ -16,6 +17,62 @@ function escapeHtml(value = "") {
     .replaceAll(">", "&gt;")
     .replaceAll('"', "&quot;")
     .replaceAll("'", "&#039;");
+}
+
+function escapeXml(value = "") {
+  return escapeHtml(value);
+}
+
+function visualHash(value = "") {
+  let hash = 2166136261;
+  for (const character of String(value)) {
+    hash ^= character.charCodeAt(0);
+    hash = Math.imul(hash, 16777619);
+  }
+  return hash >>> 0;
+}
+
+function compactLabel(value = "", limit = 34) {
+  const text = String(value).trim();
+  return text.length > limit ? `${text.slice(0, limit - 1)}…` : text;
+}
+
+const cityPalettes = {
+  bangkok: ["#ff5eb4", "#8b245f", "#180d17"],
+  pattaya: ["#ff9a52", "#b73d54", "#160d12"],
+  hanoi: ["#e3b45d", "#6d3d3f", "#15100e"],
+  "ho-chi-minh-city": ["#4fc6b3", "#225f63", "#091316"],
+  jakarta: ["#88a8ff", "#3f457d", "#0b0d19"],
+  "kuala-lumpur": ["#c88cff", "#573d7a", "#100b18"]
+};
+
+function editorialSvg({ citySlug, cityName, title, subtitle, kind, slug }) {
+  const [accent, secondary, base] = cityPalettes[citySlug] || cityPalettes.bangkok;
+  const hash = visualHash(`${citySlug}|${slug}|${kind}`);
+  const orbitX = 730 + (hash % 250);
+  const orbitY = 160 + ((hash >>> 8) % 240);
+  const initials = title.split(/\s+/).filter(Boolean).slice(0, 2).map((word) => word[0]).join("").toUpperCase();
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" role="img" aria-labelledby="title desc">
+    <title id="title">${escapeXml(title)} editorial visual</title>
+    <desc id="desc">PlayDude editorial visual for ${escapeXml(cityName)} ${escapeXml(kind.toLowerCase())}.</desc>
+    <defs>
+      <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="${base}"/><stop offset="1" stop-color="#050406"/></linearGradient>
+      <radialGradient id="glow"><stop stop-color="${accent}" stop-opacity=".74"/><stop offset="1" stop-color="${accent}" stop-opacity="0"/></radialGradient>
+      <filter id="blur"><feGaussianBlur stdDeviation="34"/></filter>
+      <pattern id="grid" width="52" height="52" patternUnits="userSpaceOnUse"><path d="M52 0H0V52" fill="none" stroke="#fff" stroke-opacity=".045"/></pattern>
+    </defs>
+    <rect width="1200" height="675" fill="url(#bg)"/>
+    <rect width="1200" height="675" fill="url(#grid)"/>
+    <circle cx="${orbitX}" cy="${orbitY}" r="280" fill="url(#glow)" filter="url(#blur)"/>
+    <path d="M-40 ${520 - (hash % 90)} C260 ${300 + (hash % 110)} 510 ${690 - (hash % 120)} 1260 ${180 + (hash % 140)}" fill="none" stroke="${secondary}" stroke-width="86" stroke-opacity=".38"/>
+    <path d="M-20 575 C320 420 700 610 1220 260" fill="none" stroke="${accent}" stroke-width="3" stroke-opacity=".85"/>
+    <rect x="62" y="56" width="1076" height="563" rx="4" fill="none" stroke="#fff" stroke-opacity=".16"/>
+    <text x="82" y="112" fill="${accent}" font-family="Arial,Helvetica,sans-serif" font-size="22" font-weight="800" letter-spacing="5">PLAYDUDE / ${escapeXml(kind.toUpperCase())}</text>
+    <text x="82" y="390" fill="#fff" font-family="Georgia,Times New Roman,serif" font-size="64" font-weight="700">${escapeXml(compactLabel(title, 30))}</text>
+    <text x="85" y="441" fill="#fff" fill-opacity=".62" font-family="Arial,Helvetica,sans-serif" font-size="23" letter-spacing="2">${escapeXml(compactLabel(subtitle, 48))}</text>
+    <text x="946" y="559" fill="#fff" fill-opacity=".09" font-family="Arial,Helvetica,sans-serif" font-size="170" font-style="italic" font-weight="900" text-anchor="middle">${escapeXml(initials)}</text>
+    <text x="82" y="573" fill="#fff" fill-opacity=".48" font-family="Arial,Helvetica,sans-serif" font-size="17" letter-spacing="4">${escapeXml(cityName.toUpperCase())} · KNOW BEFORE YOU GO</text>
+  </svg>`;
 }
 
 function normaliseVenueName(value = "") {
@@ -31,7 +88,11 @@ function normaliseVenueName(value = "") {
 
 function venueMergeKey(item) {
   const rawKey = `${item.citySlug}|${normaliseVenueName(item.name)}`;
-  return { "bangkok|baccara soi cowboy": "bangkok|baccara" }[rawKey] || rawKey;
+  return {
+    "bangkok|baccara soi cowboy": "bangkok|baccara",
+    "bangkok|sherbet": "bangkok|sherbet club bangkok",
+    "bangkok|czech": "bangkok|czech club bangkok"
+  }[rawKey] || rawKey;
 }
 
 function uniqueItems(items, keyFn = (item) => String(item)) {
@@ -103,13 +164,13 @@ function getVenueType(item) {
   if (/79 show|tiffany|oriental princess|haitian shengyan/.test(detail)) return "Adult Show";
   if (/1% barber|sharr barbershop/.test(detail)) return "Korean Massage";
   if (/spa de palace/.test(detail)) return "Nuru & Spa";
+  if (/member club|premium club|hosted restaurant/.test(category)) return "Member Club";
   if (/ktv|karaoke/.test(category) || /ktv|karaoke/.test(detail)) return "KTV";
   if (/hotel entertainment complex/.test(category)) return "Hotel Entertainment Complex";
   if (/adult show|cabaret/.test(category)) return "Adult Show";
   if (/soapy massage/.test(category)) return "Thai Shower";
   if (/go-go|beer bar|nightlife district/.test(category)) return "Go-Go Bar";
   if (/nightclub/.test(category)) return "Nightclub";
-  if (/member club|premium club|hosted restaurant/.test(category)) return "Member Club";
   if (/independent/.test(category) || (/grooming \/ cafe/.test(category) && /cafe|café|coffee/.test(name))) return "Cafe";
   if (/korean massage|recovery/.test(category) || /korean-style/.test(detail)) return "Korean Massage";
   if (/japanese massage/.test(category) || /japanese-style/.test(detail)) return "Japanese Massage";
@@ -164,6 +225,11 @@ function breadcrumbSchema(items) {
   };
 }
 
+function staticMedia(media, className = "seo-media") {
+  const image = `<img src="${media.src}" alt="${escapeHtml(media.alt)}" width="1200" height="675" loading="eager" />`;
+  return `<figure class="${className}">${media.sourceUrl ? `<a href="${media.sourceUrl}">${image}</a>` : image}<figcaption>${escapeHtml(media.credit)}</figcaption></figure>`;
+}
+
 function homeContent() {
   return `<main class="static-fallback seo-fallback" id="main-content">
     <p class="eyebrow">Field-sourced Nightlife Intelligence</p>
@@ -195,8 +261,10 @@ function guideContent(city, guide) {
     { name: guide.title }
   ];
   const related = allVenues.filter((venue) => venue.citySlug === city.slug && guide.venueSlugs?.includes(venue.slug));
+  const media = guideMedia(city, guide);
   return `<main class="static-fallback seo-fallback" id="main-content">
     ${breadcrumbs(crumbs)}
+    ${staticMedia(media)}
     <p class="eyebrow">${escapeHtml(city.name)} · ${escapeHtml(guide.kicker)}</p>
     <h1>${escapeHtml(guide.title)}</h1>
     <p>${escapeHtml(guide.summary)}</p>
@@ -204,6 +272,7 @@ function guideContent(city, guide) {
     <p><strong>Best time:</strong> ${escapeHtml(guide.bestTime)} · <strong>Budget:</strong> ${escapeHtml(guide.budget)}</p>
     ${guide.sections.map((section) => `<section><h2>${escapeHtml(section.title)}</h2><p>${escapeHtml(section.body)}</p></section>`).join("")}
     <section><h2>Checklist</h2>${list(guide.checklist, escapeHtml)}</section>
+    ${guide.sources?.length ? `<section><h2>Sources for this edition</h2>${list(guide.sources, (source) => `<a href="${source.url}">${escapeHtml(source.title)}</a> — ${escapeHtml(source.date)}. ${escapeHtml(source.note)}`)}</section>` : ""}
     ${related.length ? `<section><h2>Related Venue Intel</h2>${list(related, (venue) => `<a href="${venuePath(city, venue)}">${escapeHtml(venue.name)}</a>`)}</section>` : ""}
   </main>`;
 }
@@ -214,8 +283,10 @@ function venueContent(city, venue) {
     { name: city.name, url: cityPath(city) },
     { name: venue.name }
   ];
+  const media = venueMedia({ ...venue, cityName: city.name });
   return `<main class="static-fallback seo-fallback" id="main-content">
     ${breadcrumbs(crumbs)}
+    ${staticMedia(media)}
     <p class="eyebrow">${escapeHtml(city.name)} · ${escapeHtml(venue.type)}</p>
     <h1>${escapeHtml(venue.name)}</h1>
     <p>${escapeHtml(venue.verdict || venue.summary)}</p>
@@ -227,10 +298,11 @@ function venueContent(city, venue) {
   </main>`;
 }
 
-function pageTemplate({ title, description, pathname, content, schema = [], type = "website" }) {
+function pageTemplate({ title, description, pathname, content, schema = [], type = "website", image = null }) {
   const canonical = `${siteUrl}${pathname}`;
   const safeTitle = escapeHtml(`${title} - PlayDude`);
   const safeDescription = escapeHtml(description);
+  const imageUrl = image ? (image.startsWith("http") ? image : `${siteUrl}${image}`) : null;
   const schemas = [
     {
       "@context": "https://schema.org",
@@ -254,8 +326,12 @@ function pageTemplate({ title, description, pathname, content, schema = [], type
     <meta property="og:description" content="${safeDescription}" />
     <meta property="og:type" content="${type}" />
     <meta property="og:url" content="${canonical}" />
-    <meta name="twitter:card" content="summary" />
+    ${imageUrl ? `<meta property="og:image" content="${escapeHtml(imageUrl)}" />` : ""}
+    <meta name="twitter:card" content="${imageUrl ? "summary_large_image" : "summary"}" />
+    ${imageUrl ? `<meta name="twitter:image" content="${escapeHtml(imageUrl)}" />` : ""}
     <link rel="canonical" href="${canonical}" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="stylesheet" href="/src/styles.css" />
     <link rel="stylesheet" href="/src/theme-v7.css" />
     <script type="application/ld+json">${JSON.stringify(schemas)}</script>
@@ -288,16 +364,57 @@ function addPage(pages, details) {
   writeRoute(details.pathname, pageTemplate(details));
 }
 
+function writeEditorialMedia() {
+  const venueDirectory = path.join(output, "media", "venues");
+  const guideDirectory = path.join(output, "media", "playbooks");
+  fs.mkdirSync(venueDirectory, { recursive: true });
+  fs.mkdirSync(guideDirectory, { recursive: true });
+
+  for (const venue of allVenues) {
+    const city = cityMap.get(venue.citySlug);
+    if (!city) continue;
+    fs.writeFileSync(
+      path.join(venueDirectory, `${venue.citySlug}-${venue.slug}.svg`),
+      editorialSvg({
+        citySlug: venue.citySlug,
+        cityName: city.name,
+        title: venue.name,
+        subtitle: `${venue.type} · ${venue.area}`,
+        kind: "Venue Intel",
+        slug: venue.slug
+      })
+    );
+  }
+
+  for (const guide of allGuides) {
+    fs.writeFileSync(
+      path.join(guideDirectory, `${guide.citySlug}-${guide.slug}.svg`),
+      editorialSvg({
+        citySlug: guide.citySlug,
+        cityName: guide.cityName,
+        title: guide.title,
+        subtitle: `${guide.kicker} · ${guide.bestTime}`,
+        kind: "Playbook",
+        slug: guide.slug
+      })
+    );
+  }
+}
+
 fs.rmSync(output, { recursive: true, force: true });
 fs.mkdirSync(output, { recursive: true });
 fs.cpSync(path.join(root, "src"), path.join(output, "src"), { recursive: true });
+if (fs.existsSync(path.join(root, "public"))) {
+  fs.cpSync(path.join(root, "public"), output, { recursive: true });
+}
+writeEditorialMedia();
 
 const pages = [];
 addPage(pages, {
   pathname: "/",
   lastmod: new Date().toISOString().slice(0, 10),
   title: "Six-City Nightlife Intelligence",
-  description: "Nightlife intelligence for Bangkok, Pattaya, Hanoi, Ho Chi Minh City, Jakarta, and Kuala Lumpur with 214 unique Venue Intel profiles and 26 playbooks.",
+  description: `Nightlife intelligence for Bangkok, Pattaya, Hanoi, Ho Chi Minh City, Jakarta, and Kuala Lumpur with ${allVenues.length} unique Venue Intel profiles and ${allGuides.length} playbooks.`,
   content: homeContent(),
   schema: [{ "@context": "https://schema.org", "@type": "Organization", name: "PlayDude", url: siteUrl }]
 });
@@ -314,6 +431,7 @@ for (const city of cities) {
   });
 
   for (const guide of city.guides) {
+    const media = guideMedia(city, guide);
     const guideCrumbs = [{ name: "Home", url: "/" }, { name: city.name, url: cityPath(city) }, { name: guide.title }];
     addPage(pages, {
       pathname: guidePath(city, guide),
@@ -322,9 +440,10 @@ for (const city of cities) {
       description: `${guide.summary} Source updated ${guide.sourceUpdated}.`,
       content: guideContent(city, guide),
       type: "article",
+      image: media.src,
       schema: [
         breadcrumbSchema(guideCrumbs),
-        { "@context": "https://schema.org", "@type": "Article", headline: guide.title, description: guide.summary, dateModified: structuredDate(guide.sourceUpdated), mainEntityOfPage: `${siteUrl}${guidePath(city, guide)}`, publisher: { "@type": "Organization", name: "PlayDude" } }
+        { "@context": "https://schema.org", "@type": "Article", headline: guide.title, description: guide.summary, image: `${siteUrl}${media.src}`, dateModified: structuredDate(guide.sourceUpdated), mainEntityOfPage: `${siteUrl}${guidePath(city, guide)}`, publisher: { "@type": "Organization", name: "PlayDude" } }
       ]
     });
   }
@@ -333,6 +452,7 @@ for (const city of cities) {
 for (const venue of allVenues) {
   const city = cityMap.get(venue.citySlug);
   if (!city) continue;
+  const media = venueMedia({ ...venue, cityName: city.name });
   const venueCrumbs = [{ name: "Home", url: "/" }, { name: city.name, url: cityPath(city) }, { name: venue.name }];
   addPage(pages, {
     pathname: venuePath(city, venue),
@@ -340,6 +460,7 @@ for (const venue of allVenues) {
     title: `${venue.name}, ${city.name}`,
     description: `${venue.name}: ${venue.verdict || venue.summary} Observed price signal: ${venue.priceSignal}.`,
     content: venueContent(city, venue),
+    image: media.src,
     schema: [breadcrumbSchema(venueCrumbs)]
   });
 }
@@ -351,7 +472,7 @@ ${pages.map((page) => `  <url><loc>${siteUrl}${page.pathname}</loc>${page.lastmo
 
 fs.writeFileSync(path.join(output, "sitemap.xml"), sitemap);
 fs.writeFileSync(path.join(output, "robots.txt"), `User-agent: *\nAllow: /\n\nSitemap: ${siteUrl}/sitemap.xml\n`);
-fs.writeFileSync(path.join(output, "_redirects"), `/index.html / 301\n/home / 301\n`);
+fs.writeFileSync(path.join(output, "_redirects"), `/index.html / 301\n/home / 301\n/cities/bangkok/venues/sherbet-bangkok-100/ /cities/bangkok/venues/sherbet-club-bangkok/ 301\n/cities/bangkok/venues/czech-bangkok-101/ /cities/bangkok/venues/czech-club-bangkok/ 301\n`);
 fs.writeFileSync(path.join(output, "_headers"), `/*\n  X-Content-Type-Options: nosniff\n  Referrer-Policy: strict-origin-when-cross-origin\n  Permissions-Policy: camera=(), microphone=(), geolocation=()\n\n/sitemap.xml\n  Cache-Control: public, max-age=3600\n`);
 fs.writeFileSync(path.join(output, "404.html"), pageTemplate({
   pathname: "/404/",

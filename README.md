@@ -25,14 +25,14 @@ The project helps readers reduce uncertainty before visiting nightlife areas and
 
 ## Current Status
 
-This repository contains the six-city v8 SEO foundation. It is a no-dependency frontend with:
+This repository contains the six-city v9 illustrated intelligence release. It is a no-dependency frontend with:
 
 - A field-intelligence homepage
 - Six live city guides
 - 26 decision playbooks
 - 214 searchable, unique Venue Intel profiles
 - One consistent Type taxonomy with 12 venue types
-- 273 raw editor and source records consolidated without discarding distinct field notes
+- 275 raw editor and source records consolidated without discarding distinct field notes
 - The original 59 Bangkok/Pattaya editor profiles retained
 - All previous 170 source records retained inside Venue Intel
 - 44 new Ho Chi Minh City, Jakarta, and Kuala Lumpur records
@@ -40,6 +40,8 @@ This repository contains the six-city v8 SEO foundation. It is a no-dependency f
 - Search and category filters
 - Observed price ledgers, source dates, timing, and responsible-use notes
 - 247 crawlable static routes with unique metadata and canonical URLs
+- One unique editorial visual for every venue and playbook, plus selected official venue media with visible attribution
+- A PlayDude favicon and Apple touch icon derived from the existing PD logo
 - XML sitemap, robots policy, security headers, and a real 404 response
 - No membership, login, payment, or advertising features
 
@@ -49,7 +51,7 @@ Venue Intel preserves named venues, source prices, locations, negative opinions,
 
 Discriminatory language, illegal-drug instructions, unverifiable guarantees, and private referral contacts are not reproduced. Venues tied by the source to possible underage activity remain visible as risk records rather than being silently removed; they are clearly marked as not recommended or requiring strict 20+ verification.
 
-For the latest type-system and visual changes, see `docs/12-type-and-neon-redesign-v7.md`. For the SEO build, see `docs/13-seo-foundation-v8.md`.
+For the latest content and media changes, see `docs/14-bangkok-distillation-and-media-v9.md`. For the SEO build, see `docs/13-seo-foundation-v8.md`.
 
 ## Run Locally
 

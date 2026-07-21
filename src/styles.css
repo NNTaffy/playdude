@@ -432,6 +432,100 @@ h3,
   }
 }
 
+/* v9 media layer: every Venue Intel profile and playbook has a visual. */
+.card-media,
+.article-hero-media {
+  background: #0d0a0e;
+  margin: 0;
+  overflow: hidden;
+  position: relative;
+}
+
+.card-media {
+  aspect-ratio: 16 / 9;
+  flex: 0 0 auto;
+  margin: -1.4rem -1.4rem 1.15rem;
+}
+
+.venue-card-media {
+  margin: -1.25rem -1.25rem 1rem;
+}
+
+.card-media a,
+.article-hero-media a {
+  display: block;
+  height: 100%;
+}
+
+.card-media img,
+.article-hero-media img {
+  display: block;
+  height: 100%;
+  object-fit: cover;
+  transition: filter 180ms ease, transform 240ms ease;
+  width: 100%;
+}
+
+.card-media img[src$=".png"],
+.article-hero-media img[src$=".png"] {
+  object-fit: contain;
+  padding: 1.25rem;
+}
+
+.playbook-card:hover .card-media img,
+.venue-intel-card:hover .card-media img {
+  filter: saturate(1.08) contrast(1.03);
+  transform: scale(1.018);
+}
+
+.card-media figcaption,
+.article-hero-media figcaption {
+  background: rgba(7, 5, 8, 0.82);
+  bottom: 0;
+  color: rgba(255, 255, 255, 0.76);
+  font-size: 0.56rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  padding: 0.38rem 0.55rem;
+  position: absolute;
+  right: 0;
+  text-transform: uppercase;
+}
+
+.playbook-card,
+.venue-intel-card {
+  min-height: 36rem;
+  overflow: hidden;
+}
+
+.playbook-index {
+  font-size: 3.8rem;
+  margin-bottom: 0.8rem;
+}
+
+.venue-intel-card h3 {
+  margin-top: 1.25rem;
+}
+
+.article-hero-media {
+  aspect-ratio: 16 / 7;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  margin: 1.5rem 0 2.5rem;
+  max-height: 34rem;
+}
+
+@media (max-width: 620px) {
+  .playbook-card,
+  .venue-intel-card {
+    min-height: 34rem;
+  }
+
+  .article-hero-media {
+    aspect-ratio: 16 / 10;
+    margin-bottom: 1.5rem;
+  }
+}
+
 /* v4 complete source registry */
 .source-registry-callout {
   display: grid;
@@ -3196,5 +3290,105 @@ code {
 
   .ledger-table strong {
     text-align: left;
+  }
+}
+
+/* Keep media-aware card proportions after the release theme overrides above. */
+.playbook-card,
+.venue-intel-card {
+  min-height: 36rem;
+  overflow: hidden;
+}
+
+.playbook-index {
+  font-size: 3.8rem;
+  margin-bottom: 0.8rem;
+}
+
+.venue-intel-card h3 {
+  margin-top: 1.25rem;
+}
+
+@media (max-width: 620px) {
+  .playbook-card,
+  .venue-intel-card {
+    min-height: 34rem;
+  }
+}
+
+.seo-media {
+  aspect-ratio: 16 / 7;
+  background: #0d0a0e;
+  margin: 0 0 2rem;
+  max-width: 64rem;
+  overflow: hidden;
+  position: relative;
+}
+
+.seo-media a {
+  display: block;
+  height: 100%;
+}
+
+.seo-media img {
+  display: block;
+  height: 100%;
+  object-fit: cover;
+  width: 100%;
+}
+
+.seo-media figcaption {
+  background: rgba(7, 5, 8, 0.82);
+  bottom: 0;
+  color: rgba(255, 255, 255, 0.76);
+  font-size: 0.6rem;
+  padding: 0.4rem 0.55rem;
+  position: absolute;
+  right: 0;
+}
+
+.guide-sources {
+  border-bottom: 1px solid var(--line);
+  border-top: 1px solid var(--line);
+  display: grid;
+  gap: clamp(2rem, 6vw, 6rem);
+  grid-template-columns: minmax(14rem, 0.65fr) minmax(0, 1.35fr);
+  margin: clamp(3rem, 7vw, 6rem) 0;
+  padding: clamp(2rem, 5vw, 4rem) 0;
+}
+
+.guide-source-list {
+  display: grid;
+  gap: 1px;
+}
+
+.guide-source-list article {
+  background: var(--white);
+  border: 1px solid var(--line);
+  padding: 1.2rem;
+}
+
+.guide-source-list article > span {
+  color: var(--accent-dark);
+  font-size: 0.62rem;
+  font-weight: 850;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.guide-source-list h3 {
+  font-size: 1.15rem;
+  margin: 0.35rem 0 0.45rem;
+}
+
+.guide-source-list p {
+  color: var(--muted);
+  font-size: 0.82rem;
+  margin: 0;
+}
+
+@media (max-width: 880px) {
+  .guide-sources {
+    grid-template-columns: 1fr;
   }
 }

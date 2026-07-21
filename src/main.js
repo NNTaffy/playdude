@@ -9,6 +9,7 @@ import {
   sourceLedger
 } from "./source-ledger.js";
 import { sourceRecordToVenue } from "./expanded-cities.js";
+import { guideMedia, venueMedia } from "./media.js";
 
 const app = document.querySelector("#app");
 const publishedCities = getPublishedCities();
@@ -34,7 +35,9 @@ function normaliseVenueName(value = "") {
 function venueMergeKey(item) {
   const rawKey = `${item.citySlug}|${normaliseVenueName(item.name)}`;
   const aliases = {
-    "bangkok|baccara soi cowboy": "bangkok|baccara"
+    "bangkok|baccara soi cowboy": "bangkok|baccara",
+    "bangkok|sherbet": "bangkok|sherbet club bangkok",
+    "bangkok|czech": "bangkok|czech club bangkok"
   };
   return aliases[rawKey] || rawKey;
 }
@@ -129,13 +132,13 @@ function getVenueType(item) {
   if (/79 show|tiffany|oriental princess|haitian shengyan/.test(detail)) return "Adult Show";
   if (/1% barber|sharr barbershop/.test(detail)) return "Korean Massage";
   if (/spa de palace/.test(detail)) return "Nuru & Spa";
+  if (/member club|premium club|hosted restaurant/.test(category)) return "Member Club";
   if (/ktv|karaoke/.test(category) || /ktv|karaoke/.test(detail)) return "KTV";
   if (/hotel entertainment complex/.test(category)) return "Hotel Entertainment Complex";
   if (/adult show|cabaret/.test(category)) return "Adult Show";
   if (/soapy massage/.test(category)) return "Thai Shower";
   if (/go-go|beer bar|nightlife district/.test(category)) return "Go-Go Bar";
   if (/nightclub/.test(category)) return "Nightclub";
-  if (/member club|premium club|hosted restaurant/.test(category)) return "Member Club";
   if (/independent/.test(category) || (/grooming \/ cafe/.test(category) && /cafe|café|coffee/.test(name))) return "Cafe";
   if (/korean massage|recovery/.test(category) || /korean-style/.test(detail)) return "Korean Massage";
   if (/japanese massage/.test(category) || /japanese-style/.test(detail)) return "Japanese Massage";
@@ -175,6 +178,16 @@ function escapeText(value = "") {
     .replaceAll(">", "&gt;")
     .replaceAll('"', "&quot;")
     .replaceAll("'", "&#039;");
+}
+
+function renderMediaFigure(media, className, loading = "lazy") {
+  const image = `<img src="${media.src}" alt="${escapeText(media.alt)}" width="1200" height="675" loading="${loading}" decoding="async" />`;
+  return `
+    <figure class="${className}">
+      ${media.sourceUrl ? `<a href="${media.sourceUrl}" target="_blank" rel="noopener noreferrer">${image}</a>` : image}
+      <figcaption>${escapeText(media.credit)}</figcaption>
+    </figure>
+  `;
 }
 
 function setMeta(name, content, attr = "name") {
@@ -222,6 +235,12 @@ function pageShell(content, meta = {}) {
   setMeta("og:title", document.title, "property");
   setMeta("og:description", description, "property");
   setMeta("og:type", "website", "property");
+  setMeta("twitter:card", meta.image ? "summary_large_image" : "summary");
+  if (meta.image) {
+    const imageUrl = meta.image.startsWith("http") ? meta.image : `https://playdude.club${meta.image}`;
+    setMeta("og:image", imageUrl, "property");
+    setMeta("twitter:image", imageUrl);
+  }
   setCanonical();
 
   return `
@@ -390,8 +409,10 @@ function renderFieldCityCard(city) {
 }
 
 function renderGuideCard(city, item, index) {
+  const media = guideMedia(city, item);
   return `
     <article class="playbook-card">
+      ${renderMediaFigure(media, "card-media playbook-card-media")}
       <div class="playbook-index">${String(index).padStart(2, "0")}</div>
       <p class="eyebrow">${city.name} / ${item.kicker}</p>
       <h3>${item.title}</h3>
@@ -447,8 +468,10 @@ function renderVenueExplorer(items, citySlug = "all") {
 
 function renderVenueCard(item) {
   const city = getCity(item.citySlug) || publishedCities.find((candidate) => candidate.venues.some((venue) => venue.slug === item.slug));
+  const media = venueMedia({ ...item, cityName: city?.name || item.cityName });
   return `
     <article class="venue-intel-card">
+      ${renderMediaFigure(media, "card-media venue-card-media")}
       <div class="venue-card-top">
         <span>${city?.name || "Thailand"}</span>
         <span>${item.type}</span>
@@ -575,6 +598,7 @@ function renderPreviewCity(city) {
 
 function renderGuidePage(city, item) {
   const relatedVenues = item.venueSlugs.map((slug) => getVenue(city.slug, slug)).filter(Boolean);
+  const media = guideMedia(city, item);
 
   return pageShell(
     `
@@ -584,6 +608,7 @@ function renderGuidePage(city, item) {
             <nav class="breadcrumbs" aria-label="Breadcrumb">
               <a href="/" data-link>Home</a><span>/</span><a href="${cityPath(city)}" data-link>${city.name}</a><span>/</span><span>Playbook</span>
             </nav>
+            ${renderMediaFigure(media, "article-hero-media guide-hero-media", "eager")}
             <div class="guide-title-grid">
               <div>
                 <p class="eyebrow">${city.name} / ${item.kicker}</p>
@@ -611,6 +636,21 @@ function renderGuidePage(city, item) {
             <ol>${item.checklist.map((check) => `<li>${check}</li>`).join("")}</ol>
           </section>
 
+          ${item.sources?.length ? `
+            <section class="guide-sources" aria-labelledby="guide-sources-title">
+              <div><p class="eyebrow">Source trail</p><h2 id="guide-sources-title">What changed this edition.</h2></div>
+              <div class="guide-source-list">
+                ${item.sources.map((source) => `
+                  <article>
+                    <span>${source.date}</span>
+                    <h3><a href="${source.url}" target="_blank" rel="noopener noreferrer">${source.title} <span aria-hidden="true">&nearr;</span></a></h3>
+                    <p>${source.note}</p>
+                  </article>
+                `).join("")}
+              </div>
+            </section>
+          ` : ""}
+
           ${relatedVenues.length ? `
             <section class="related-venues">
               <div class="section-heading compact-heading">
@@ -630,11 +670,12 @@ function renderGuidePage(city, item) {
         </article>
       </main>
     `,
-    { title: `${item.title}, ${city.name}`, description: `${item.summary} Source updated ${item.sourceUpdated}.` }
+    { title: `${item.title}, ${city.name}`, description: `${item.summary} Source updated ${item.sourceUpdated}.`, image: media.src }
   );
 }
 
 function renderVenueProfile(city, item) {
+  const media = venueMedia({ ...item, citySlug: city.slug, cityName: city.name });
   const sourceLabel = item.mergedRecordCount > 1
     ? `${item.mergedRecordCount} records merged`
     : item.sourceUpdated;
@@ -646,6 +687,7 @@ function renderVenueProfile(city, item) {
             <nav class="breadcrumbs" aria-label="Breadcrumb">
               <a href="/" data-link>Home</a><span>/</span><a href="${cityPath(city)}" data-link>${city.name}</a><span>/</span><span>${item.name}</span>
             </nav>
+            ${renderMediaFigure(media, "article-hero-media venue-hero-media", "eager")}
             <div class="venue-profile-title">
               <div>
                 <p class="eyebrow">${item.type} / ${item.area}</p>
@@ -736,7 +778,7 @@ function renderVenueProfile(city, item) {
         </article>
       </main>
     `,
-    { title: `${item.name}, ${city.name}`, description: `${item.name}: ${item.verdict} Observed price signal: ${item.priceSignal}. Source ${item.sourceUpdated}.` }
+    { title: `${item.name}, ${city.name}`, description: `${item.name}: ${item.verdict} Observed price signal: ${item.priceSignal}. Source ${item.sourceUpdated}.`, image: media.src }
   );
 }
 

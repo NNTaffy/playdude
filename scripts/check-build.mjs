@@ -24,6 +24,8 @@ const required = [
   "404.html",
   "_redirects",
   "_headers",
+  "favicon.svg",
+  "apple-touch-icon.png",
   "cities/bangkok/index.html",
   "cities/pattaya/index.html",
   "cities/hanoi/index.html",
@@ -69,5 +71,10 @@ assert(canonicals.size === 247, `Expected 247 unique canonicals, received ${cano
 const sitemap = fs.readFileSync(path.join(output, "sitemap.xml"), "utf8");
 const sitemapUrls = sitemap.match(/<loc>/g)?.length || 0;
 assert(sitemapUrls === 247, `Expected 247 sitemap URLs, received ${sitemapUrls}.`);
+
+const venueVisuals = fs.readdirSync(path.join(output, "media", "venues")).filter((file) => file.endsWith(".svg"));
+const playbookVisuals = fs.readdirSync(path.join(output, "media", "playbooks")).filter((file) => file.endsWith(".svg"));
+assert(venueVisuals.length === manifest.venues, `Expected ${manifest.venues} venue visuals, received ${venueVisuals.length}.`);
+assert(playbookVisuals.length === manifest.guides, `Expected ${manifest.guides} playbook visuals, received ${playbookVisuals.length}.`);
 
 console.log(`SEO build verified: ${manifest.pages} pages and ${sitemapUrls} sitemap URLs.`);

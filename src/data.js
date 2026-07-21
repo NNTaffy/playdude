@@ -21,6 +21,7 @@ function guide(details) {
     sections: [],
     checklist: [],
     venueSlugs: [],
+    sources: [],
     ...details
   };
 }
@@ -195,7 +196,27 @@ const bangkokVenues = [
     timing: "Best selection reported around 6-8 PM",
     entryNotes: "Ask for the complete tier card before choosing.",
     tips: ["Decide your ceiling before entering.", "Confirm card or mobile-payment acceptance at reception."],
-    sourceUpdated: "May 2026",
+    sourceUpdated: "May 2026; compared July 2026",
+    confidence: "Two independent editorial sources plus official channel",
+    officialUrl: "https://www.blackcaviarbangkok.com/",
+    sourceEntries: [
+      {
+        source: "PlayDude commissioned Bangkok field note · May 2026",
+        page: null,
+        note: "Premium Ratchada benchmark with the broadest observed tier ladder in the commissioned comparison set.",
+        price: "THB 5,500-42,000 observed",
+        status: "Founder-sourced field note",
+        url: "https://www.blackcaviarbangkok.com/"
+      },
+      {
+        source: "Bao Bob high-end Bangkok guide · September 2025",
+        page: null,
+        note: "A second visit report described a lower THB 6,500-16,000 selection range and optional paid room upgrades. The narrower range may reflect the live line-up rather than the full menu.",
+        price: "THB 6,500-16,000 reported",
+        status: "Independent editorial comparison",
+        url: "https://twbob.tw/bangkok-high-end-nightlife/"
+      }
+    ],
     mapUrl: "https://maps.app.goo.gl/Gu7TaXPpps6ohdE6A"
   }),
   venue({
@@ -212,7 +233,27 @@ const bangkokVenues = [
     timing: "6-8 PM",
     entryNotes: "Request the current price board; do not rely on driver or third-party quotes.",
     tips: ["Arrive independently.", "Confirm package, duration, and any service charge."],
-    sourceUpdated: "May 2026",
+    sourceUpdated: "May 2026; compared July 2026",
+    confidence: "Two independent editorial sources plus official social channel",
+    officialUrl: "https://www.facebook.com/MariaEntertainment/",
+    sourceEntries: [
+      {
+        source: "PlayDude commissioned Bangkok field note · May 2026",
+        page: null,
+        note: "Long-running premium Ratchada venue with a large selection and a broad tier ladder.",
+        price: "THB 5,100-33,000 observed",
+        status: "Founder-sourced field note",
+        url: "https://www.facebook.com/MariaEntertainment/"
+      },
+      {
+        source: "Bao Bob high-end Bangkok guide · September 2025",
+        page: null,
+        note: "A separate visit report described a THB 7,000-22,500 live range, a standard room included in the package, and paid upgrades for larger rooms.",
+        price: "THB 7,000-22,500 reported",
+        status: "Independent editorial comparison",
+        url: "https://twbob.tw/bangkok-high-end-nightlife/"
+      }
+    ],
     mapUrl: "https://maps.app.goo.gl/WYSHTDVm93yVa8Uz6"
   }),
   venue({
@@ -359,22 +400,122 @@ const bangkokVenues = [
     area: "Bangkok",
     category: "Premium club",
     type: "Large adult entertainment club",
-    summary: "A high-budget club with a show floor, sofa seating, private rooms, bottle packages, and hosted companion seating.",
+    summary: "A large high-budget club with live bands, a show floor, sofa seating, bottle service, hosted companion seating, and private party rooms.",
     verdict: "Best treated as a planned group night with a written budget, not a spontaneous walk-in.",
     bestFor: ["Groups", "Bottle-service format", "High budgets"],
     notIdealFor: ["Solo value seekers", "Unplanned visits"],
     priceSignal: "High; multiple minimum-spend layers",
     priceItems: [
-      { label: "Reported table minimum", value: "From THB 5,000" },
-      { label: "Reported sofa minimum", value: "From THB 8,000" },
-      { label: "Reported room fee", value: "THB 2,500-9,000" },
-      { label: "Reported hosted seating", value: "THB 2,000-3,000 first hour" }
+      { label: "Observed small-table minimum", value: "From THB 1,500" },
+      { label: "Observed sofa minimum", value: "THB 5,000-7,000" },
+      { label: "Observed private-room fee", value: "THB 2,500-20,000" },
+      { label: "Observed hosted seating", value: "THB 2,000 first hour; THB 1,000 extensions" }
     ],
     timing: "Thursday-Saturday for the largest reported line-up",
     entryNotes: "Minimum spend, room fee, bottle package, and hosted seating are separate line items.",
     watchFor: "The source also reports additional adult packages. Ask for a complete written quote and engage only with clearly identified adults 20+.",
     tips: ["Have one person approve all orders.", "Photograph or retain the written bill structure, not people.", "Ask what counts toward the minimum spend."],
-    sourceUpdated: "May 2026"
+    sourceUpdated: "May 2026; official check July 2026",
+    confidence: "Field note, independent editorial comparison, and official website",
+    officialUrl: "https://www.pimpbangkok.com/",
+    mapUrl: "https://maps.app.goo.gl/DaBPNYq9hFne7LLXA",
+    sourceEntries: [
+      {
+        source: "PlayDude commissioned Bangkok field note · May 2026",
+        page: null,
+        note: "Large-format premium club where minimum spend, hosted seating, bottles, and rooms must be priced separately.",
+        price: "Plan THB 20,000+ for a serious group visit",
+        status: "Founder-sourced field note",
+        url: "https://www.pimpbangkok.com/"
+      },
+      {
+        source: "Bao Bob high-end Bangkok guide · September 2025",
+        page: null,
+        note: "A second report supplied the small-table, sofa, hosted-seating, and room-fee observations retained in the current ledger.",
+        price: "Tables from THB 1,500; rooms THB 2,500-20,000 reported",
+        status: "Independent editorial comparison",
+        url: "https://twbob.tw/bangkok-high-end-nightlife/"
+      }
+    ]
+  }),
+  venue({
+    slug: "sherbet-club-bangkok",
+    name: "Sherbet Club Bangkok",
+    area: "Ekkamai / Sukhumvit 63",
+    category: "Premium club",
+    type: "Hosted nightlife club",
+    summary: "An established Ekkamai club combining a main hall, scheduled entertainment, hosted seating, bottle service, and private karaoke rooms.",
+    verdict: "A clearer premium-club comparison than a blind late-night walk-in because the official site publishes its address, events, menus, and profile sections.",
+    bestFor: ["Small groups", "Ekkamai base", "Visitors comparing a main hall with a private room"],
+    notIdealFor: ["Strict low budgets", "Visitors expecting a guaranteed private outcome"],
+    priceSignal: "Observed THB 2,000 table minimum; hosted seating from THB 1,680 first hour",
+    priceItems: [
+      { label: "Observed walk-in table minimum", value: "From THB 2,000" },
+      { label: "Observed hosted seating", value: "THB 1,680 first hour" },
+      { label: "Observed extension", value: "THB 420 per 30 minutes" },
+      { label: "Observed private-room fee", value: "From THB 2,500" }
+    ],
+    timing: "Check the official event calendar; arrive before the headline entertainment",
+    entryNotes: "The official site lists 59 Sukhumvit 63 in Ekkamai. Menus and room availability can change by event night.",
+    watchFor: "Hosted time, room fees, bottles, food, and minimum spend are separate line items. Social interaction does not guarantee that anyone will leave the venue with you.",
+    tips: ["Ask what counts toward the minimum spend.", "Request a running bill before moving to a room.", "Treat any off-premise decision as private, adult, and fully consensual."],
+    sourceUpdated: "September 2025; official check July 2026",
+    confidence: "Independent editorial source plus official website",
+    officialUrl: "https://www.sherbetclubbkk.com/",
+    mapUrl: "https://maps.app.goo.gl/98xRFUiJ7TEmS4jx5",
+    sourceEntries: [
+      {
+        source: "Bao Bob high-end Bangkok guide · September 2025",
+        page: null,
+        note: "Visit report covering the main-hall minimum, hourly hosted seating, extensions, and entry-level karaoke-room fee.",
+        price: "THB 2,000 table minimum; THB 1,680 first hosted hour",
+        status: "Independent editorial observation",
+        url: "https://twbob.tw/bangkok-high-end-nightlife/"
+      },
+      {
+        source: "Sherbet Club official website · checked July 2026",
+        page: null,
+        note: "Official address, event, menu, contact, and venue-profile sections confirmed. Live prices still require direct verification.",
+        price: "Verify current menu",
+        status: "Official venue channel",
+        url: "https://www.sherbetclubbkk.com/"
+      }
+    ]
+  }),
+  venue({
+    slug: "czech-club-bangkok",
+    name: "Czech Club Bangkok",
+    area: "Bangkok",
+    category: "Premium club",
+    type: "Hosted nightlife club",
+    summary: "A lower-entry comparison within Bangkok's hosted-club category, with bottle, hourly seating, and karaoke-room pricing reported below the largest premium houses.",
+    verdict: "Useful as a category trial, but the source is older and the live menu must be verified before ordering.",
+    bestFor: ["First hosted-club comparison", "Smaller groups", "Midrange club budgets"],
+    notIdealFor: ["Anyone unwilling to confirm every charge"],
+    priceSignal: "Observed bottles from THB 3,000; hosted seating THB 1,000-2,000 first hour",
+    priceItems: [
+      { label: "Observed bottle minimum", value: "From THB 3,000" },
+      { label: "Observed first hosted hour", value: "THB 1,000-2,000" },
+      { label: "Observed extension", value: "THB 500-600 per hour" },
+      { label: "Observed karaoke-room fee", value: "THB 2,000-3,000" }
+    ],
+    timing: "Verify current opening days and arrive before committing to another district",
+    entryNotes: "Only one independent price report and an official Facebook page were confirmed. Treat every number as historical.",
+    tips: ["Request the current bottle and room menu.", "Name one person to approve orders.", "Do not treat a hosted-seating fee as consent to anything else."],
+    sourceUpdated: "September 2025; channel check July 2026",
+    confidence: "Single editorial price source plus official social channel",
+    officialUrl: "https://www.facebook.com/CzechClubBkk/",
+    mapUrl: "https://maps.app.goo.gl/WLPJkfeLcEkxaVu38",
+    sourceEntries: [
+      {
+        source: "Bao Bob high-end Bangkok guide · September 2025",
+        page: null,
+        note: "The report positioned Czech Club as a lower-entry hosted-club comparison and supplied the retained bottle, seating, extension, and room observations.",
+        price: "Bottle from THB 3,000; room THB 2,000-3,000 reported",
+        status: "Single independent editorial observation",
+        url: "https://twbob.tw/bangkok-high-end-nightlife/"
+      }
+    ]
   })
 ];
 
@@ -637,17 +778,23 @@ const bangkokGuides = [
     slug: "first-night-playbook",
     title: "Bangkok First-Night Playbook",
     kicker: "Start here",
-    summary: "Choose the district before the venue. Bangkok becomes manageable once Sukhumvit, Ratchada, Silom, and Patpong stop blending together.",
-    verdict: "Stay near the format you actually want; crossing Bangkok at peak hours can erase the value of a cheaper venue.",
+    summary: "Choose the format, district, and spending ceiling in that order. Bangkok becomes manageable once Sukhumvit, Ratchada, Silom, Ekkamai, and Patpong stop blending together.",
+    verdict: "One afternoon format plus one nearby evening format is enough. Crossing Bangkok to chase a cheaper quote usually destroys the saving.",
     bestTime: "Start planning before 7 PM",
     budget: "Carry cash plus one backup card",
-    sourceUpdated: "May 2026 + official checks July 2026",
+    sourceUpdated: "May 2026 + source and official checks July 2026",
     sections: [
-      { title: "Choose your base", body: "Asok or Nana is the most flexible base for Thermae, Nana Plaza, Soi Cowboy, and Sukhumvit massage venues. Sala Daeng works better for Thaniya and Patpong. Ratchada is the practical base for large soapy-massage venues." },
-      { title: "Build one route", body: "Do not combine Sukhumvit, Ratchada, and Patpong in one short evening. Pick one district, one comparison stop, and one final venue." },
-      { title: "Set the budget before drinking", body: "Guest drinks, hosted drinks, venue fees, companion fees, rooms, and transport may all be separate. Ask for the full stack, not one headline number." }
+      { title: "Decode the eight-format market", body: "The broad market splits into Japanese-style massage, large Thai-shower houses, local or Japanese karaoke, go-go bars, hosted premium clubs, ordinary nightlife bars, independent meeting points, and smaller specialist venues. These are different products with different bill structures; do not compare only the headline price." },
+      { title: "Choose your base", body: "Asok or Nana is the most flexible base for Nana Plaza, Soi Cowboy, Thermae, and Sukhumvit venues. Phrom Phong fits the Soi 22-33 comparison corridor. Ratchada fits large Thai-shower houses, Sala Daeng fits Patpong and Thaniya, and Ekkamai fits hosted clubs and mainstream nightlife." },
+      { title: "Build one route", body: "Use one afternoon format and one nearby evening format. A practical first night is Sukhumvit comparison followed by Nana or Cowboy; a Ratchada visit should remain its own destination night." },
+      { title: "Set the budget before drinking", body: "Guest drinks, hosted drinks, minimum spend, bottles, room fees, extensions, venue fees, and transport may all be separate. Ask which charges count toward the minimum and request a running bill." },
+      { title: "Treat prices as signals", body: "The two added editorial sources report wide and sometimes conflicting ranges. PlayDude preserves the date and source of each observation instead of presenting a single number as a live promise." }
     ],
     checklist: ["Submit TDAC within the official three-day window before arrival.", "Carry valid ID; alcohol sales and adult venues are 20+.", "Save Tourist Police 1155.", "Confirm your hotel guest policy.", "Use licensed ride-hailing and keep valuables secured."],
+    sources: [
+      { title: "NightAsia Bangkok eight-format overview", url: "https://nightasia.com/dark-bangkok-info/", date: "Checked July 2026", note: "Used for the format map, broad price signals, and district comparison; promotional and booking claims were excluded." },
+      { title: "Bao Bob high-end Bangkok guide", url: "https://twbob.tw/bangkok-high-end-nightlife/", date: "September 2025", note: "Used as a dated second source for premium Thai-shower and hosted-club pricing." }
+    ],
     venueSlugs: ["thermae-cafe", "nana-plaza", "billboard-bangkok", "baccara-cowboy"]
   }),
   guide({
@@ -671,17 +818,20 @@ const bangkokGuides = [
     slug: "ratchada-soapy-massage",
     title: "Ratchada Soapy-Massage Intelligence",
     kicker: "6-8 PM",
-    summary: "A tiered comparison of premium and midrange houses, with observed May 2026 package ranges.",
+    summary: "A tiered comparison of premium and midrange houses, including a second-source check on Maria and Black Caviar.",
     verdict: "Decide your ceiling first; the widest venues can present price ladders from a few thousand to tens of thousands of baht.",
     bestTime: "6-8 PM for the broadest reported selection",
     budget: "Observed THB 2,000-42,000",
-    sourceUpdated: "May 2026",
+    sourceUpdated: "May 2026; second-source comparison July 2026",
     sections: [
-      { title: "Premium tier", body: "Black Caviar and Maria carry the broadest reported ranges and largest selections. Tara and Lalisa sit closer to the upper-midrange." },
+      { title: "Premium tier", body: "Black Caviar and Maria carry the broadest reported ranges. A September 2025 visit report recorded narrower live ranges than the May 2026 commissioned notes, which is a reminder that a night's available selection is not the same thing as the full menu ladder." },
       { title: "Midrange tier", body: "Little Duck, Merci, Nancy, La Belle, and The Bank provide lower starting points, but live selection may be smaller." },
       { title: "Avoid referral pricing", body: "Arrive independently and request the public price card. A driver or guide referral can change the opening quote." }
     ],
     checklist: ["Set a hard spending ceiling.", "Ask what each tier changes.", "Confirm payment method.", "Do not pay an unofficial intermediary.", "Keep transport independent."],
+    sources: [
+      { title: "Bao Bob high-end Bangkok guide", url: "https://twbob.tw/bangkok-high-end-nightlife/", date: "September 2025", note: "Second-source price observations for Maria Massage and Black Caviar." }
+    ],
     venueSlugs: ["black-caviar", "maria-massage-bangkok", "tara-bangkok", "lalisa-ratchada-17", "little-duck", "merci-massage", "nancy-soapy", "la-belle", "the-bank-massage"]
   }),
   guide({
@@ -737,20 +887,26 @@ const bangkokGuides = [
   }),
   guide({
     slug: "bangkok-premium-clubs",
-    title: "Bangkok Premium Club Budgeting",
+    title: "Bangkok Hosted-Club Budgeting",
     kicker: "High-budget format",
-    summary: "How minimum spend, bottles, rooms, hosted seating, and adult packages layer together in Bangkok's large clubs.",
-    verdict: "A group product that works only when one person controls the bill.",
+    summary: "Compare The Pimp, Sherbet, and Czech Club by minimum spend, bottles, rooms, hosted seating, and bill-control discipline.",
+    verdict: "Start with the room and bill structure, not a promise about who might be there. This format works best when one person controls the spend.",
     bestTime: "Thursday-Saturday, 10 PM onward",
     budget: "Plan THB 20,000+ for a serious group visit",
-    sourceUpdated: "May 2026",
+    sourceUpdated: "May 2026; second-source and official checks July 2026",
     sections: [
-      { title: "Separate every line item", body: "Minimum spend usually covers drinks and food, not room fees or hosted seating. Ask what counts toward the minimum." },
+      { title: "Choose the tier", body: "The Pimp is the largest destination format, Sherbet is a more structured Ekkamai comparison with an active official site, and Czech Club was reported as the lower-entry trial. The Czech price source is older, so verify before travelling." },
+      { title: "Separate every line item", body: "Minimum spend may cover only selected drinks or food. Hosted seating, extensions, bottles, private rooms, event surcharges, and service charges can remain separate. Ask what counts toward the minimum." },
       { title: "Group control", body: "Choose one person to approve bottles, hosted seating, extensions, and private-room changes. Request a running bill." },
-      { title: "Who this is for", body: "Premium clubs make sense for three or more people who plan to stay several hours. Solo visitors usually get better value elsewhere." }
+      { title: "No guaranteed outcome", body: "Hosted seating pays for time and venue hospitality, not consent or a guaranteed off-premise arrangement. Any later decision must be private, adult, explicit, and reversible." }
     ],
     checklist: ["Book through an official channel.", "Request a complete written quote.", "Name one bill owner.", "Set a hard ceiling.", "Confirm adult ID for all hosted participants."],
-    venueSlugs: ["the-pimp-bangkok"]
+    sources: [
+      { title: "Bao Bob high-end Bangkok guide", url: "https://twbob.tw/bangkok-high-end-nightlife/", date: "September 2025", note: "Dated visit observations for The Pimp, Sherbet, and Czech Club." },
+      { title: "The Pimp official website", url: "https://www.pimpbangkok.com/", date: "Checked July 2026", note: "Used to verify the current club format, live zone, hosted seating, and private-room structure." },
+      { title: "Sherbet Club official website", url: "https://www.sherbetclubbkk.com/", date: "Checked July 2026", note: "Used to verify the Ekkamai address, events, menus, and venue profile sections." }
+    ],
+    venueSlugs: ["the-pimp-bangkok", "sherbet-club-bangkok", "czech-club-bangkok"]
   })
 ];
 
@@ -883,7 +1039,7 @@ export const cities = [
     country: "Thailand",
     status: "Field guide live",
     sourceUpdated: "May 2026",
-    summary: "Bangkok is not one nightlife scene. It is a set of different systems: Sukhumvit comparison lanes, Ratchada's large houses, Nana and Cowboy go-go bars, Thaniya karaoke, Thermae's independent market, and high-budget clubs.",
+    summary: "Bangkok is not one nightlife scene. It is a set of different systems: Sukhumvit comparison lanes, Ratchada's large houses, Nana and Cowboy go-go bars, Thaniya karaoke, Thermae's independent market, and hosted clubs around Ekkamai and other destination districts.",
     mood: "High variety, high information advantage, transport-sensitive",
     bestFor: ["Visitors who plan by format", "Premium choice", "District comparison"],
     notIdealFor: ["One-night visitors trying to cross the whole city", "Anyone unwilling to confirm prices"],
@@ -902,7 +1058,8 @@ export const cities = [
       { name: "Asok / Nana", bestFor: "Thermae, Nana Plaza, Cowboy, flexible hotel base", atmosphere: "International and direct", confidence: "High", price: "Mixed", know: "The easiest first-night base because several formats sit within one short corridor." },
       { name: "Sukhumvit Soi 33", bestFor: "Afternoon adult-massage comparison", atmosphere: "Dense storefront corridor", confidence: "High", price: "THB 1,800-7,500 observed", know: "Walk the lane once, compare current menus, and never photograph staff." },
       { name: "Ratchada", bestFor: "Large soapy-massage venues", atmosphere: "Destination venues, less walkable", confidence: "Medium", price: "THB 2,000-42,000 observed", know: "Set your ceiling and arrive independently to avoid referral pricing." },
-      { name: "Silom / Thaniya", bestFor: "Japanese karaoke and conversation-led nights", atmosphere: "Structured, hourly, slower", confidence: "Medium", price: "Layered hourly charges", know: "Age verification is essential; PlayDude excludes businesses named in source allegations involving minors." }
+      { name: "Silom / Thaniya", bestFor: "Japanese karaoke and conversation-led nights", atmosphere: "Structured, hourly, slower", confidence: "Medium", price: "Layered hourly charges", know: "Age verification is essential; PlayDude excludes businesses named in source allegations involving minors." },
+      { name: "Ekkamai / Thonglor", bestFor: "Hosted clubs and mainstream nightlife", atmosphere: "Destination clubs, bottle service, later start", confidence: "Medium", price: "Layered table, bottle, hosted-time, and room charges", know: "Sherbet publishes an official Ekkamai address and events; treat every quoted club price as date-sensitive." }
     ],
     guides: bangkokGuides,
     venues: bangkokVenues
